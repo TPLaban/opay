@@ -18,7 +18,7 @@
 }
 .row-one{
   background-color: rgb(249, 248, 250);
-  width: 97%;
+  width: 90%;
   display: flex;
   border-radius: 10px;
   justify-content: left;
@@ -92,7 +92,7 @@ border-color: blue;
 }
 
 .card{
-  width: 96%;
+  width: 90%;
   background-color: rgb(100, 15, 179);
   color: white;
   display: block;
