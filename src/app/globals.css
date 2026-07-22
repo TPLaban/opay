@@ -1,26 +1,441 @@
-@import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+.wrapper{
+  width: 100%;
+  background-color: rgb(252, 155, 228);
+  margin: auto;
+  padding-top: 10px;
+}
+.contain{
+  /* padding-top: 20px; */
+  width: 30%;
+  display: block;
+  background-color: rgb(165, 203, 227);
+  border-radius: 10px;
+  margin: auto;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+}
+.row-one{
+  background-color: rgb(249, 248, 250);
+  width: 90%;
+  display: flex;
+  border-radius: 10px;
+  justify-content: left;
+  gap: 10px;
+  align-items: center;
+  padding: 5px;
+  
+   margin-bottom: 10px;
+   margin-right: 10px;
+   margin-left: 10px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+.image{
+
+  width: 30px;
+  height: 30px;
+  border-radius: 100px;
+  cursor: pointer;
+  /* background-color: blue; */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.welcome-title {
+  width: 80%;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: 8px;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+
+.searchbtn {
+  /* background-color: blue; */
+ width: 12%;
+border-radius: 100px;
+border-color: blue;
 }
+.notification{
+  /* background-color: blueviolet; */
+  width: 40px;
+  height: 30px;
+  border-radius: 100px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-top: 3px;
+}
+
+.scroll-text{
+  width: 93%;
+  background-color:  white;
+  font-size: 14px;
+  color: rgb(233, 10, 10);
+  margin-left: 10px;
+  border-radius: 5px;
+  font-style: bold;
+  padding: 4px;
+}
+.date-time{
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+
+}
+.display-time{
+  font-size: 12px;
+  padding-left: 10px;
+}
+
+.display-date{
+    font-size: 12px;
+  padding-left: 10px;
+}
+
+.card{
+  width: 90%;
+  background-color: rgb(100, 15, 179);
+  color: white;
+  display: block;
+  justify-content: left;
+  border-radius: 12px;
+     margin-bottom: 10px;
+   margin-right: 10px;
+   margin-left: 10px;
+   margin-top: 10px;
+  padding: 10px;
+  font-size: 10px;
+
+}
+
+.card-row1{
+  display: flex;
+  justify-content: left;
+  gap: 20px;
+  align-items: center;
+  width: 100%;
+}
+
+.amount {
+  font-size: 15px;
+  align-items: center;
+  text-align: center;
+  display: flex;
+  gap: 5px;
+  width: 75%;
+
+}
+.naira{ 
+  font-size: 15px;
+  text-decoration:line-through;
+  text-decoration-style: double;
+  
+}
+.copy{
+  cursor: pointer;
+ 
+}
+.card-row2{
+  display: flex;
+  justify-content: left;
+  gap: 20px;
+  align-items: center;
+  width: 100%;
+}
+
+.card-row3{
+  display: flex;
+  justify-content: left;
+  gap: 20px;
+  align-items: center;
+  width: 100%;
+  gap: 5px;
+}
+
+.account-no{
+  gap: 5px;
+  display: flex;
+  align-items: center;
+  width: 85%;
+}
+.hist{
+  color: white;
+  font-size: 12px;
+}
+
+table {
+
+font-size: 12px;
+width: 95%;
+background-color: white;
+margin-left: 10px;
+margin-right: 10px;
+
+}
+table, th, td {
+  border: 1px solid rgb(14, 14, 234);
+  border-collapse: collapse;
+}
+td{
+      /* height: 45px; */
+    border: solid 1px;
+   text-align:left;
+   padding-left: 10px;
+
+}
+
+.recent-transactions {
+  width: 97%;
+  padding-left: 10px;
+  /* background-color: rgb(207, 221, 232); */
+  border-radius: 10px;
+}
+
+.transaction{
+  /* width: 100%; */
+  /* background-color: white; */
+  /* padding-left: 10px;
+  padding-top: 1px;
+  padding-bottom: 10px;
+  border-radius: 10px; */
+}
+.individual-transaction {
+  display: flex;
+  justify-content:space-between;
+  gap:20px;
+  background-color: rgb(207, 221, 232);
+  padding-left: 10px;
+  margin-right: 10px;
+ border-radius: 10px;
+ margin-top: 10px;
+
+}
+.description{
+ width: 100%;
+ justify-content: left;
+/* background-color: rgb(183, 17, 17) ; */
+}
+
+.item1{
+
+  font-size: 15px;
+}
+
+.item2{
+  font-size: 12px;
+}
+
+.item3{
+  /* padding-top: 25px; */
+padding-right: 10px;
+/* background-color: aquamarine; */
+padding-left: 5px;
+}
+.naira1{ font-size: 15px;
+  text-decoration:line-through;
+  text-decoration-style: double;
+}
+
+.total-income{
+  background-color: rgb(226, 43, 43);
+  width: 100%;
+}
+
+.delete-icon {
+  color: rgb(241, 3, 35);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.edit-icon {
+  color: rgb(0, 123, 255);
+  font-size: 20px;
+  cursor: pointer;
+}
+.delete-edit-container {
+  display: flex;
+  gap: 20px;
+   justify-content: space-around;
+} 
+.transaction-form{
+  width: 90%;
+  background-color: rgb(207, 221, 232);
+  padding: 10px;
+  margin-left: 10px;
+  border-radius: 10px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+.amount-label{
+  font-size: 12px;
+  margin-bottom: 5px;
+  padding-right: 10px;
+}
+.transaction-input-amount{
+  width: 30%;
+  height: 25px;
+  border-radius: 5px;
+  border: none;
+  margin-bottom: 10px;
+
+}
+.select-label{
+  font-size: 12px;
+  margin-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.transaction-select-input{
+  font-size: 12px;
+  width: 30%;
+  height: 30px;
+  border-radius: 5px;
+  border: none;
+ margin-bottom: 10px;
+/* background-color: rgb(188, 235, 18); */
+}
+
+.description-label{
+  font-size: 12px;
+  margin-bottom: 5px;
+padding-right: 10px;
+  
+}
+.transaction-input-description{
+  width: 77%;
+  height: 25px;
+  border-radius: 5px;
+  border: none;
+  margin-bottom: 10px;
+  align-items: center;
+ 
+}
+.add-btn{
+  width: 100%;
+  margin-right: 60px;
+    height: 30px;
+  border-radius: 5px;
+  border: none;
+  background-color: blue;
+  color: white;
+  cursor: pointer;
+}
+.edit-function{
+  width: 90%;
+ padding: 10px;
+ margin-top: 10px;
+ align-items: center;
+ text-align: center;
+/* background-color: blueviolet; */
+border-radius: 10px;
+}
+.edit-btn{
+  width: 35%;
+  margin-right: 60px;
+  margin-left: 20px;
+  height: 30px;
+  border-radius: 5px;
+  border: none;
+  background-color: blue;
+  color: white;
+  cursor: pointer;
+}
+.cancel-btn{
+  width: 35%;
+
+  height: 30px;
+  border-radius: 5px;
+  border: none;
+  background-color: rgb(240, 4, 4);
+  color: white;
+  cursor: pointer;
+}
+.transaction-summary{
+  width: 90%;
+  /* background-color: rgb(207, 221, 232); */
+  padding: 10px;
+  margin-left: 10px;
+  border-radius: 10px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+.total-income-expense{
+  display: flex;
+  justify-content: space-around;
+  width: 95%;
+  background-color: rgb(207, 221, 232);
+  padding: 10px;
+  margin: auto;
+  gap: 30px;
+  border-radius: 10px;
+  /* margin-top: 10px; */
+  font-size: 15px;
+}
+
+/* .history{
+  width: 90%;
+  background-color:white;
+    display: block;
+  justify-content: left;
+  border-radius: 12px;
+     margin-bottom: 10px;
+   margin-right: 10px;
+   margin-left: 10px;
+  padding: 10px;
+  font-size: 10px;
+  height: 55px;
+  overflow:auto;
+}
+
+.transaction-history{
+  gap: 30px;
+  display: flex;
+} */
+
+.title-services{
+  padding-left: 20px;
+  margin-bottom: 0px;
+  font-size: 15px;
+}
+
+.services{
+  padding: 10px;
+ display: flex;
+ gap: 20px;
+ font-size: 12px;
+ justify-content: space-around;
+flex-direction: row;
+background-color: white;
+width: 90%;
+border-radius: 10px;
+margin: auto;
+}
+
+.btn{
+  width: 60px;
+  height: 55px;
+  background-color: rgb(224, 203, 244);
+  display: block;
+  border-radius: 100px;
+  font-size: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.airtime{
+  text-align: center;
+}
+
+.data{
+  text-align: center;
+}
+.transfer{
+  text-align: center;
+}
+.marketplace{
+  text-align: center;
+}
+
+
+
+
+
