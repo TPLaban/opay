@@ -40,9 +40,16 @@ function Page() {
   }, [])
 
 // get a transaction from the backend API
+  const normalizeTransactions = (payload) => {
+    if (Array.isArray(payload)) return payload
+    if (Array.isArray(payload?.transactions)) return payload.transactions
+    if (payload && typeof payload === 'object') return [payload]
+    return []
+  }
+
   const fetchTransactions = useCallback(async () => {
     try {
-      const response = await fetch(['http://localhost:5000/api/create-transaction', 'https://backend-1-7m4z.onrender.com'], {
+      const response = await fetch('http://localhost:5000/api/transactions', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -56,8 +63,8 @@ function Page() {
         return
       }
 
-      const data = await response.json()
-      const items = data?.transactions ?? data ?? []
+      const data = await response.json().catch(() => null)
+      const items = normalizeTransactions(data)
       setTransactions(items)
       setErrorMessage('')
     } catch (error) {
@@ -66,7 +73,18 @@ function Page() {
   }, [displayNetworkError])
 
     useEffect(() => {
-      fetchTransactions()
+      let isActive = true
+
+      const loadTransactions = async () => {
+        await fetchTransactions()
+        if (!isActive) return
+      }
+
+      loadTransactions()
+
+      return () => {
+        isActive = false
+      }
     }, [fetchTransactions])
 
 
@@ -78,7 +96,7 @@ function Page() {
         return;
       }
 
-      const response = await fetch (['http://localhost:5000/api/create-transaction', 'https://backend-1-7m4z.onrender.com'], {
+      const response = await fetch ('http://localhost:5000/api/delete-transaction', {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -88,9 +106,9 @@ function Page() {
         body: JSON.stringify({id})
       })
       
-      const data = await response.json();
+      const data = await response.json().catch(() => null);
       if (response.ok) {
-        fetchTransactions ()
+        await fetchTransactions();
         alert("Transaction deleted successfully!");
       } else {
         alert (`Error: ${data.message || "Failed to delete transaction"}`);
@@ -152,7 +170,7 @@ function Page() {
           amount: parseFloat(formData.amount) || 0,
         };
 
-        const response = await fetch( ['http://localhost:5000/api/create-transaction', 'https://backend-1-7m4z.onrender.com'], {
+        const response = await fetch('http://localhost:5000/api/create-transaction', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -162,14 +180,18 @@ function Page() {
         });
 
         if (response.ok) {
-          const data = await response.json();
+          const data = await response.json().catch(() => null);
+          const createdItems = normalizeTransactions(data);
+          if (createdItems.length > 0) {
+            setTransactions((prev) => [...prev, ...createdItems]);
+          }
           alert("Transaction created successfully!");
           setFormData({
             amount: '',
             category: '',
             description: '',
           });
-          fetchTransactions();
+          await fetchTransactions();
         } else {
           try {
             const errorData = await response.json();
@@ -205,7 +227,7 @@ function Page() {
         id: transactionID
       };
 
-      const response = await fetch(['http://localhost:5000/api/create-transaction', 'https://backend-1-7m4z.onrender.com'], {
+      const response = await fetch('http://localhost:5000/api/update-transaction', {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -226,11 +248,22 @@ function Page() {
       }
 
       if (response.ok) {
-        fetchTransactions();
+        if (data?.transaction && typeof data.transaction === 'object') {
+          setTransactions((prev) => prev.map((item) => item._id === transactionID ? { ...item, ...data.transaction } : item));
+        } else {
+          const updatedItems = normalizeTransactions(data);
+          if (updatedItems.length > 0) {
+            setTransactions(updatedItems);
+          } else {
+            await fetchTransactions();
+          }
+        }
         cancelEditing();
+        setErrorMessage('');
         alert("Transaction updated successfully!");
       } else {
         const message = data?.message || bodyText || `Server returned ${response.status} ${response.statusText}`;
+        displayNetworkError(message);
         alert(`Error: ${message}`);
       }
     } catch (error) {
@@ -406,118 +439,112 @@ function Page() {
 
   <div className='recent-transactions'>
   <p>Recent Transactions</p>
+
+  <form className='transaction-form' onSubmit={handleTransactionSubmit}>
+    <label htmlFor="amount" className='amount-label'>Amount:</label>
+    <input 
+      type="number" 
+      id="amount"
+      name="amount"
+      placeholder="Enter amount" 
+      className='transaction-input-amount'
+      value={formData.amount}
+      onChange={handleInputChange}
+    /> 
+
+    <label htmlFor="category" className='select-label'>Category</label> 
+    <select
+      id="category"
+      name="category"
+      className='transaction-select-input'
+      value={formData.category}
+      onChange={handleInputChange}
+    >
+      <option value="">Select category</option>
+      <option value="Income">Income</option>
+      <option value="Expense">Expense</option>
+    </select> 
+
+    <label htmlFor="description" className='description-label'>Description:</label>
+    <input 
+      type="text" 
+      id="description"
+      name="description"
+      placeholder="Enter description" 
+      className='transaction-input-description'
+      value={formData.description}
+      onChange={handleInputChange}
+    />
+
+    <input type="submit" value="Add Transaction" className='add-btn'/>
+  </form>
+
   <div className='transaction'>
+    {transactions.length === 0 ? (
+      <div className='empty-state'>No transactions yet.</div>
+    ) : (
+      transactions.map((item) => (
+        <div key={item._id || `${item.description}-${item.amount}`}>
+          <div className='individual-transaction' >
+            <div className='description'>
+              <p className='item1'>{item.description || 'No description'}</p>
+              <p className='item2'>{item.category || 'Uncategorized'}</p>
+            </div>
 
-    {transactions.map ((item) => (
-      <div key = {item._id}>
-        {transactions === item._id && (
-                  <form className='transaction-form' onSubmit={handleTransactionSubmit}>
-          <label htmlFor="amount" className='amount-label'>Amount:</label>
-          <input 
-            type="number" 
-            id="amount"
-            name="amount"
-            placeholder="Enter amount" 
-            className='transaction-input-amount'
-            value={formData.amount}
-            onChange={handleInputChange}
-          /> 
+            <div className='item3'>
+              <p><span className='naira1'>N</span>{Number(item.amount || 0).toLocaleString('en-US')}</p>
 
-          <label htmlFor="category" className='select-label'>Category</label> 
-          <select
-            id="category"
-            name="category"
-            className='transaction-select-input'
-            value={formData.category}
-            onChange={handleInputChange}
-          >
-            <option value="">Select category</option>
-            <option value="Income">Income</option>
-            <option value="Expense">Expense</option>
-          </select> 
-
-          <label htmlFor="description" className='description-label'>Description:</label>
-          <input 
-            type="text" 
-            id="description"
-            name="description"
-            placeholder="Enter description" 
-            className='transaction-input-description'
-            value={formData.description}
-            onChange={handleInputChange}
-          />
-
-          <input type="submit" value="Add Transaction" className='add-btn'/>
-        </form>
-        )}
-
-        <div className='individual-transaction' >
-          <div className='description'>
-           <p className='item1'>{item.description}</p>
-           <p className='item2'>{item.category}</p>
-        </div>
-
-        <div className='item3'>
-         <p ><span className='naira1'>N</span>{item.amount.toLocaleString('en-US')}</p>
-
-         <div className='delete-edit-container'>
-           <MdDelete className='delete-icon'
-            onClick={() => deleteTransaction(item._id)} />
-
-          <MdEdit className='edit-icon'
-            onClick={() => startEditing(item)}/>
-            
-        </div>
-        
+              <div className='delete-edit-container'>
+                <MdDelete className='delete-icon' onClick={() => deleteTransaction(item._id)} />
+                <MdEdit className='edit-icon' onClick={() => startEditing(item)} />
+              </div>
+            </div>
           </div>
-          
+
+          <div className='edit-function'>
+            {editTransaction === item._id && (
+              <form className='edit-transaction-form' onSubmit={(e) => {
+                e.preventDefault();
+                saveEditedTransaction(item._id);
+              }}>
+                <input 
+                  type="number" 
+                  name="amount"
+                  placeholder="Enter amount" 
+                  className='transaction-input-amount'
+                  value={editFormData.amount}
+                  onChange={handleEditInputChange}
+                  style={{marginRight: "30px", width:"120px"}}
+                />
+                <select
+                  name="category"
+                  className='transaction-select-input'
+                  value={editFormData.category}
+                  onChange={handleEditInputChange}
+                  style={{ marginLeft: '10px', width: '155px' }}
+                >
+                  <option value="">Select category</option>
+                  <option value="Income">Income</option>
+                  <option value="Expense">Expense</option>
+                </select>
+                <input 
+                  type="text" 
+                  name="description"
+                  placeholder="Enter description" 
+                  className='transaction-input-description'
+                  value={editFormData.description}
+                  onChange={handleEditInputChange}
+                  style={{ width: '320px' }}
+                />
+
+                <button type="submit" className='edit-btn'>Save</button>
+                <button type="button" onClick={cancelEditing} className='cancel-btn'>Cancel</button>
+              </form>
+            )}
+          </div>
         </div>
-        <div className='edit-function'>
-        {editTransaction === item._id && (
-        <form className='edit-transaction-form' onSubmit={(e) => {
-            e.preventDefault();
-            saveEditedTransaction(item._id);
-          }}>
-            <input 
-              type="number" 
-              name="amount"
-              placeholder="Enter amount" 
-              className='transaction-input-amount'
-              value={editFormData.amount}
-              onChange={handleEditInputChange}
-              style={{marginRight: "30px", width:"120px"}}
-            />
-            <select
-              name="category"
-              className='transaction-select-input'
-              value={editFormData.category}
-              onChange={handleEditInputChange}
-              style={{ marginLeft: '10px', width: '155px' }}
-            >
-              <option value="">Select category</option>
-              <option value="Income">Income</option>
-              <option value="Expense">Expense</option>
-            </select>
-            <input 
-              type="text" 
-              name="description"
-              placeholder="Enter description" 
-              className='transaction-input-description'
-              value={editFormData.description}
-              onChange={handleEditInputChange}
-              style={{ width: '320px' }}
-            />
-
-            <button type="submit" className='edit-btn'>Save</button>
-            <button type="button" onClick={cancelEditing} className='cancel-btn'>Cancel</button>
-          </form>
-        )}
-
-  </div>
-        </div>
-      
-    ))}
-
+      ))
+    )}
   </div>
 
 </div>
