@@ -20,6 +20,8 @@ function Page() {
   const [currentDate, setCurrentDate] = useState('')
   const [visible, setVisible] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [showSearch, setShowSearch] = useState(false)
 
  
   const [formData, setFormData] = useState({
@@ -300,7 +302,7 @@ function Page() {
   const name = 'Paul'
   const greeting = time < 12
     ? `Good morning ${name}.`
-    : time < 18
+    : time < 20
       ? `Good afternoon ${name}.`
       : `Good night ${name}.`
 
@@ -310,6 +312,47 @@ function Page() {
       .then(() => console.log("Text copied successfully!"))
       .catch(err => console.error("Failed to copy text: ", err));
   }
+
+  const openDeviceCamera = async () => {
+    if (!navigator.mediaDevices?.getUserMedia) {
+      alert("Camera access is not supported in this browser.");
+      return;
+    }
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      stream.getTracks().forEach((track) => track.stop());
+      alert("Camera access granted.");
+    } catch (error) {
+      console.error("Failed to open camera:", error);
+      alert("Camera access denied or unavailable.");
+    }
+  }
+
+  const handleSearchInputChange = (e) => {
+    setSearchQuery(e.target.value)
+  }
+
+  const openSearch = () => {
+    setShowSearch((prev) => {
+      if (prev) {
+        setSearchQuery('')
+      }
+      return !prev
+    })
+  }
+
+  const filteredTransactions = transactions.filter((item) => {
+    const query = searchQuery.trim().toLowerCase()
+    if (!query) return true
+
+    const amountText = String(item.amount || '').toLowerCase()
+    return (
+      String(item.description || '').toLowerCase().includes(query) ||
+      String(item.category || '').toLowerCase().includes(query) ||
+      amountText.includes(query)
+    )
+  })
  
   return (
 
@@ -328,13 +371,14 @@ function Page() {
         <div id='demo' className="welcome-title" >
         {greeting}
         </div>
-          <CiSearch className='image' onClick={SearchParamsContext}/>        
+          <CiSearch className='image' onClick={() => openSearch()} />        
         <div>
         <Image className='image'
                 src="/camera.png"
                 alt="camera"
                 width={15}
                 height={15}
+                onClick={() => openDeviceCamera()}
                 />
         </div>
         <div className="notification">
@@ -350,6 +394,18 @@ function Page() {
     Date: {currentDate}
    </div>
     </div>
+
+    {showSearch && (
+      <div className='search-bar'>
+        <input
+          type='text'
+          value={searchQuery}
+          onChange={handleSearchInputChange}
+          placeholder='Search by description, category, or amount'
+          className='search-input'
+        />
+      </div>
+    )}
    
         <marquee className="scroll-text">Use your assigned virtual account for the fastest wallet credit. /// Manual funding is temporarily available while the transition continues.</marquee>
   
@@ -376,16 +432,16 @@ function Page() {
 
         </div>
         <div className='account-open'>
-          Account Open
+          Account Active
         </div>
       </div>
       <div className='card-row2'>
-        <p>Polaris Save Plus</p>
+        <p>Laban Bank Save Plus</p>
       </div>
       <div className='card-row3'>
           <div className='account-no'>
-            <p>10101626537</p>
-            <IoIosCopy className="copy" onClick={() => copyToClipboard("10101626537")}/>      
+            <p>20201626537</p>
+            <IoIosCopy className="copy" onClick={() => copyToClipboard("20201626537")}/>      
           </div>
           <div > <a className='hist' href="http:">History </a></div>
       </div>
@@ -478,10 +534,10 @@ function Page() {
   </form>
 
   <div className='transaction'>
-    {transactions.length === 0 ? (
-      <div className='empty-state'>No transactions yet.</div>
+    {filteredTransactions.length === 0 ? (
+      <div className='empty-state'>No transactions found.</div>
     ) : (
-      transactions.map((item) => (
+      filteredTransactions.map((item) => (
         <div key={item._id || `${item.description}-${item.amount}`}>
           <div className='individual-transaction' >
             <div className='description'>
