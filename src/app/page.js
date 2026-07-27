@@ -313,9 +313,8 @@ function Page() {
  
   return (
 
-    <div className="wrapper">
 
-<div className="contain">
+<div className="container">
 
 <div className='row-one'>
         <div>
@@ -329,7 +328,6 @@ function Page() {
         <div id='demo' className="welcome-title" >
         {greeting}
         </div>
-        
           <CiSearch className='image' onClick={SearchParamsContext}/>        
         <div>
         <Image className='image'
@@ -615,8 +613,6 @@ function Page() {
           
     </div>
 </div>
-   
-    </div>
     
   )
 }
