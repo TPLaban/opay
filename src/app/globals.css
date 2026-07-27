@@ -7,7 +7,7 @@
 } */
 .container{
   /* padding-top: 20px; */
-  width: 90%;
+  width: 30%;
   display: block;
   background-color: rgb(165, 203, 227);
   border-radius: 10px;
@@ -15,6 +15,7 @@
   padding-top: 20px;
   padding-bottom: 10px;
   padding-left: 10px;
+  padding-right: 10px;
 
 }
 .row-one{
@@ -264,7 +265,7 @@ padding-left: 5px;
   padding: 10px;
   border-radius: 10px;
   margin-top: 10px;
-  margin-right: 10px;
+  margin-right: 20px;
   font-size: 14px;
   gap: 10px;
 }
@@ -289,7 +290,7 @@ padding-left: 5px;
 }
 .transaction-select-input{
   font-size: 12px;
-  width: 30%;
+  width: 35%;
   height: 30px;
   border-radius: 5px;
   border: none;
@@ -304,7 +305,7 @@ padding-right: 10px;
   
 }
 .transaction-input-description{
-  width: 85%;
+  width: 75%;
   height: 25px;
   border-radius: 5px;
   border: none;
@@ -408,7 +409,7 @@ border-radius: 10px;
  justify-content: space-around;
 flex-direction: row;
 background-color: white;
-width: 95%;
+width: 90%;
 border-radius: 10px;
 margin: auto;
 }
