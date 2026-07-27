@@ -36,6 +36,12 @@ function Page() {
     description: ''
   })
 
+  const API_BASE = 'https://backend-1-7m4z.onrender.com/api'
+  const API_HEADERS = {
+    'Content-Type': 'application/json',
+    'X-Api-Key': 'e9a3a2b8e2b5eea2cf4947c39021ca317fcbf8fcfe9e672cfca14b784353fb58',
+  }
+
   const displayNetworkError = useCallback((message = 'Network error. Please try again.') => {
     setErrorMessage(message)
     console.error(message)
@@ -172,12 +178,9 @@ function Page() {
           amount: parseFloat(formData.amount) || 0,
         };
 
-        const response = await fetch('https://backend-1-7m4z.onrender.com/edit-transaction', {
+        const response = await fetch(`${API_BASE}/transactions`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Api-Key': 'e9a3a2b8e2b5eea2cf4947c39021ca317fcbf8fcfe9e672cfca14b784353fb58',
-          },
+          headers: API_HEADERS,
           body: JSON.stringify(TransactionToSubmit),
         });
 
@@ -229,12 +232,9 @@ function Page() {
         id: transactionID
       };
 
-      const response = await fetch('https://backend-1-7m4z.onrender.com/api/put-transaction', {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Api-Key": "e9a3a2b8e2b5eea2cf4947c39021ca317fcbf8fcfe9e672cfca14b784353fb58",
-        },
+      const response = await fetch(`${API_BASE}/put-transaction`, {
+        method: 'PUT',
+        headers: API_HEADERS,
         body: JSON.stringify(updatedTransaction),
       });
 
