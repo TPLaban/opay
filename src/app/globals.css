@@ -271,7 +271,7 @@ padding-left: 5px;
 .amount-label{
   font-size: 12px;
   margin-bottom: 5px;
-  padding-right: 20px;
+  padding-right: 10px;
 }
 .transaction-input-amount{
   width: 30%;
@@ -284,8 +284,8 @@ padding-left: 5px;
 .select-label{
   font-size: 12px;
   margin-bottom: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 .transaction-select-input{
   font-size: 12px;
@@ -304,7 +304,7 @@ padding-right: 10px;
   
 }
 .transaction-input-description{
-  width: 90%;
+  width: 85%;
   height: 25px;
   border-radius: 5px;
   border: none;
