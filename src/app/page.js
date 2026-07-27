@@ -51,7 +51,7 @@ function Page() {
 
   const fetchTransactions = useCallback(async () => {
     try {
-      const response = await fetch('https://backend-1-7m4z.onrender.com', {
+      const response = await fetch('https://backend-1-7m4z.onrender.com/api/transactions', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -98,7 +98,7 @@ function Page() {
         return;
       }
 
-      const response = await fetch ('https://backend-1-7m4z.onrender.com', {
+      const response = await fetch ('https://backend-1-7m4z.onrender.com/api/delete-transaction', {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -172,7 +172,7 @@ function Page() {
           amount: parseFloat(formData.amount) || 0,
         };
 
-        const response = await fetch('https://backend-1-7m4z.onrender.com', {
+        const response = await fetch('https://backend-1-7m4z.onrender.com/edit-transaction', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -229,7 +229,7 @@ function Page() {
         id: transactionID
       };
 
-      const response = await fetch('https://backend-1-7m4z.onrender.com', {
+      const response = await fetch('https://backend-1-7m4z.onrender.com/api/put-transaction', {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
